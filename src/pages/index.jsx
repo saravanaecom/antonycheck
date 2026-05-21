@@ -3,7 +3,7 @@ import ImageCategorySlider from "../components/slider/ImageCategorySlider";
 import OfferFastMovingProduct from "../components/slider/offerFastMovingProduct";
 // import ProductByIndexPage from '../components/slider/productByIndexPage';
 import { Container } from '@mui/material';
-import ShippingSection from "../components/slider/ShippingSection";
+// import ShippingSection from "../components/slider/ShippingSection";
 import ProductShow from "../components/slider/productShow";
 
 
