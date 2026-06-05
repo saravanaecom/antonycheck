@@ -3,7 +3,7 @@ export const ServerURL = {
     //PRODUCTION_HOST_URL:  `http://13.200.71.164:9002/`,
     //PRODUCTION_HOST_URL: `https://fooddelivery-app-server.onrender.com`, 
      PRODUCTION_HOST_URL: `https://ecomapi.kassapos.co.in/`, 
-    COMPANY_REF_ID: 53,
+    COMPANY_REF_ID: 73,
     COMPANY_NAME: ``,
     COMPANY_ADDRESS: ``,
     COMPANY_URL: ``,
