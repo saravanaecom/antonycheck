@@ -312,7 +312,7 @@ export default function ProductCheckout() {
                             textTransform: 'none',
                             fontWeight: 'bold',
                             fontSize: '14px',
-                            background: theme.palette.shadowcolorCode.main,
+                            background: `${theme.palette.basecolorCode.main}15`,
                             border: '1px solid',
                             borderColor: theme.palette.basecolorCode.main,
                             color: theme.palette.basecolorCode.main,
@@ -321,7 +321,7 @@ export default function ProductCheckout() {
                                 border: '1px solid',
                                 background: theme.palette.basecolorCode.main,
                                 borderColor: theme.palette.basecolorCode.main,
-                                color: theme.palette.whitecolorCode.main,
+                                color: '#ffffff',
                                 boxShadow: 'none',
                             }
                         }} size='small' onClick={handleAlertClose} variant='contained'>Okay</Button>
@@ -332,7 +332,7 @@ export default function ProductCheckout() {
                 <Grid container spacing={4} style={{ padding: {xs: '0px', sm: '0px', md: '12px', lg: '20px', xl: '20px'} }}>
                     {/* Left Section - Delivery Address */}
                     <Grid item xs={12} md={8}>
-                        <Box sx={{ border: '1px solid #3BB77' }} padding={3} mb={2}>
+                        <Box sx={{ border: `1px solid ${theme.palette.basecolorCode.main}40` }} padding={3} mb={2}>
                             <Typography variant="h6" style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
                                 <CheckCircleIcon color="success" style={{ marginRight: '10px' }} />
                                 Delivery Address
@@ -346,7 +346,7 @@ export default function ProductCheckout() {
                                         textTransform: 'none',
                                         fontWeight: 'bold',
                                         fontSize: '14px',
-                                        background: theme.palette.shadowcolorCode.main,
+                                        background: `${theme.palette.basecolorCode.main}15`,
                                         border: '1px solid',
                                         borderColor: theme.palette.basecolorCode.main,
                                         color: theme.palette.basecolorCode.main,
@@ -355,7 +355,7 @@ export default function ProductCheckout() {
                                             border: '1px solid',
                                             background: theme.palette.basecolorCode.main,
                                             borderColor: theme.palette.basecolorCode.main,
-                                            color: theme.palette.whitecolorCode.main,
+                                            color: '#ffffff',
                                             boxShadow: 'none',
                                         }
                                     }}>Change address</Button>
@@ -418,6 +418,7 @@ export default function ProductCheckout() {
                             </Typography>
                             <RadioGroup value={PaymentType}>
                                 <FormControlLabel value="PayOnline" control={<Radio onChange={() => handlePaymentType('PayOnline')} size="small" />} label="Pay Online" />
+                                <FormControlLabel value="COD" control={<Radio onChange={() => handlePaymentType('COD')} size="small" />} label="Cash on Delivery (COD)" />
                             </RadioGroup>
 
                             <Box sx={{ mt: 2, float: 'left' }}>
@@ -437,13 +438,13 @@ export default function ProductCheckout() {
                                         border: '1px solid',
                                         borderColor: theme.palette.basecolorCode.main,
                                         background: theme.palette.basecolorCode.main,
-                                        color: theme.palette.whitecolorCode.main,
+                                        color: '#ffffff',
                                         boxShadow: 'none',
                                         '&:hover': {
                                             background: theme.palette.basecolorCode.main,
                                             border: '1px solid',
                                             borderColor: theme.palette.basecolorCode.main,
-                                            color: theme.palette.whitecolorCode.main,
+                                            color: '#ffffff',
                                             boxShadow: 'none',
                                         },
                                     }}
@@ -461,7 +462,7 @@ export default function ProductCheckout() {
                     {/* Right Section - Order Summary */}
                     <Grid item xs={12} md={4} sx={{ px: { xs: 1, md: 3 } }}>
                         <Box sx={{ px: { xs: 1, md: 0 } }}>
-                        <Typography align='left' variant="h6">Order Summary</Typography>
+                        <Typography align='left' variant="h6" sx={{ color: theme.palette.lightblackcolorCode.main }}>Order Summary</Typography>
                         <Divider style={{ marginBottom: '20px' }} />
                         {cartItems.map((product, index) => (
                             <>
@@ -482,6 +483,7 @@ export default function ProductCheckout() {
                                         <Box align='left'>
                                             <Typography variant="p"
                                                 sx={{
+                                                    color: theme.palette.lightblackcolorCode.main,
                                                     fontSize: '12px',
                                                     fontWeight: 'bold',
                                                     overflow: 'hidden',
@@ -496,9 +498,12 @@ export default function ProductCheckout() {
                                                     marginRight: 0,
                                                 }}
                                             >
-                                                {product.Description} <Typography variant="p" color="textSecondary"
+                                                {product.Description} <Typography variant="p"
+
                                                     sx={{
                                                         fontSize: '10px',
+                                                        color: theme.palette.lightblackcolorCode.main,
+                                                        opacity: 0.7
                                                     }}
                                                 >
                                                     ({product.UnitType})
@@ -506,7 +511,7 @@ export default function ProductCheckout() {
                                             </Typography>
                                         </Box>
                                         <Box>
-                                            <Typography align='left' variant="body2">Qty: {product.item} X {product.Price.toLocaleString('en-IN', { style: 'currency', currency: ServerURL.CURRENCY, minimumFractionDigits: 2, maximumFractionDigits: 2 })}</Typography>
+                                            <Typography align='left' variant="body2" sx={{ color: theme.palette.lightblackcolorCode.main }}>Qty: {product.item} X {product.Price.toLocaleString('en-IN', { style: 'currency', currency: ServerURL.CURRENCY, minimumFractionDigits: 2, maximumFractionDigits: 2 })}</Typography>
                                             {/* <Typography variant="body2" align="right" style={{ color: 'green' }}>{product.totalMRP.toLocaleString('en-IN', { style: 'currency', currency: ServerURL.CURRENCY, minimumFractionDigits: 2, maximumFractionDigits: 2 })}</Typography> */}
                                         </Box>
                                     </Box>
@@ -521,15 +526,15 @@ export default function ProductCheckout() {
                         <Box align='left' sx={{ width: '100%' }}>
                             <Grid container>
                                 <Grid item xs={8} sx={{ mt: 0.5 }}>
-                                    <Typography align='left' sx={{ fontSize: '14px', borderBottom: 'dashed 1px lightgray', display: 'inline' }} variant="body1">MRP Total Amount</Typography>
+                                    <Typography align='left' sx={{ fontSize: '14px', borderBottom: 'dashed 1px lightgray', display: 'inline', color: theme.palette.lightblackcolorCode.main }} variant="body1">MRP Total Amount</Typography>
                                 </Grid>
                                 <Grid item xs={4} sx={{ mt: 0.5 }}>
-                                    <Typography sx={{ fontSize: '14px' }} variant="body1" align="right">
+                                    <Typography sx={{ fontSize: '14px', color: theme.palette.lightblackcolorCode.main }} variant="body1" align="right">
                                         {MRPAmount.toLocaleString('en-IN', { style: 'currency', currency: ServerURL.CURRENCY, minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                                     </Typography>
                                 </Grid>
                                 <Grid item xs={8} sx={{ mt: 0.5 }}>
-                                    <Typography align='left' sx={{ fontSize: '14px', borderBottom: 'dashed 1px lightgray', display: 'inline' }} variant="body1">Total Savings</Typography>
+                                    <Typography align='left' sx={{ fontSize: '14px', borderBottom: 'dashed 1px lightgray', display: 'inline', color: theme.palette.lightblackcolorCode.main }} variant="body1">Total Savings</Typography>
                                 </Grid>
                                 <Grid item xs={4} sx={{ mt: 0.5 }}>
                                     <Typography sx={{ fontSize: '14px' }} variant="body1" align="right" color="green">
@@ -563,10 +568,10 @@ export default function ProductCheckout() {
                                 </Grid>
 
                                 <Grid item xs={8} sx={{ mt: 0.5 }}>
-                                    <Typography sx={{ fontSize: '14px', borderBottom: 'dashed 1px lightgray', display: 'inline' }} variant="body1">Total Amount</Typography>
+                                    <Typography sx={{ fontSize: '14px', borderBottom: 'dashed 1px lightgray', display: 'inline', color: theme.palette.lightblackcolorCode.main }} variant="body1">Total Amount</Typography>
                                 </Grid>
                                 <Grid item xs={4} sx={{ mt: 0.5 }}>
-                                    <Typography sx={{ fontSize: '14px' }} variant="body1" align="right">
+                                    <Typography sx={{ fontSize: '14px', color: theme.palette.lightblackcolorCode.main }} variant="body1" align="right">
                                         {(TotalPrice + DeliveryFee + HandlingCharge - ExtraDiscount).toLocaleString('en-IN', { style: 'currency', currency: ServerURL.CURRENCY, minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                                     </Typography>
                                 </Grid>

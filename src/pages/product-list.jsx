@@ -24,6 +24,7 @@ import { API_FetchCategorySubCategory } from '../services/categoryServices';
 import { ImagePathRoutes } from '../routes/ImagePathRoutes';
 import { styled } from '@mui/system';
 import { useTheme } from '@mui/material/styles';
+import LocalDiningIcon from '@mui/icons-material/LocalDining';
 
 const drawerWidth = 240;
 
@@ -197,16 +198,16 @@ const ProductList = () => {
 
     switch (productFilterName) {
       case "Price(Low > High)":
-        sortedProducts.sort((a, b) => a.price - b.price);
+        sortedProducts.sort((a, b) => (a.Price || 0) - (b.Price || 0));
         break;
       case "Price(High > Low)":
-        sortedProducts.sort((a, b) => b.price - a.price);
+        sortedProducts.sort((a, b) => (b.Price || 0) - (a.Price || 0));
         break;
       case "Alphabetical":
-        sortedProducts.sort((a, b) => a.name.localeCompare(b.name));
+        sortedProducts.sort((a, b) => (a.Description || "").localeCompare(b.Description || ""));
         break;
       case "Alphabetical Reverse":
-        sortedProducts.sort((a, b) => b.name.localeCompare(a.name));
+        sortedProducts.sort((a, b) => (b.Description || "").localeCompare(a.Description || ""));
         break;
       default:
         sortedProducts = [...productLists];
@@ -262,13 +263,13 @@ const ProductList = () => {
                       onClick={() => handleSubCategoryClick(category.SubCategory, category.Id)}
                       sx={{
                         borderLeft: activeCategory === category.SubCategory ? `4px solid ${theme.palette.basecolorCode.main}` : 'none',
-                        backgroundColor: activeCategory === category.SubCategory ? `${theme.palette.shadowcolorCode.main}` : 'transparent',
-                        color: activeCategory === category.SubCategory ? `${theme.palette.basecolorCode.main}` : '#253D4E',
+                        backgroundColor: activeCategory === category.SubCategory ? `${theme.palette.basecolorCode.main}15` : 'transparent',
+                        color: activeCategory === category.SubCategory ? `${theme.palette.basecolorCode.main}` : theme.palette.lightblackcolorCode.main,
                         '& .MuiListItemIcon-root': {
-                          color: activeCategory === category.SubCategory ? '#000' : 'inherit',
+                          color: activeCategory === category.SubCategory ? theme.palette.basecolorCode.main : 'inherit',
                         },
                         '&:hover': {
-                          backgroundColor: theme.palette.shadowcolorCode.main,
+                          backgroundColor: `${theme.palette.basecolorCode.main}15`,
                           color: theme.palette.basecolorCode.main
                         },
                       }}
@@ -280,7 +281,7 @@ const ProductList = () => {
                           width: '3rem',
                           borderRadius: '9999px',
                           padding: '.25rem',
-                          backgroundColor: '#f7f0fa',
+                          backgroundColor: theme.palette.shadowcolorCode.main,
                           marginRight: 10,
                         }}
                         src={category.ImagePath ? ImagePathRoutes.SubCategoryImagePath + category.ImagePath : "https://www.healthysteps.in/categoryimages/All-categories.png"}
@@ -327,14 +328,14 @@ const ProductList = () => {
                       onClick={() => handleSubCategoryClick(category.SubCategory, category.Id)}
                       sx={{
                         borderLeft: activeCategory === category.SubCategory ? `4px solid ${theme.palette.basecolorCode.main}` : 'none',
-                        backgroundColor: activeCategory === category.SubCategory ? '#3bb77e1c' : 'transparent',
-                        color: activeCategory === category.SubCategory ? '#3BB77E' : '#253D4E',
+                        backgroundColor: activeCategory === category.SubCategory ? `${theme.palette.basecolorCode.main}15` : 'transparent',
+                        color: activeCategory === category.SubCategory ? theme.palette.basecolorCode.main : theme.palette.lightblackcolorCode.main,
                         '& .MuiListItemIcon-root': {
-                          color: activeCategory === category.SubCategory ? '#000' : 'inherit',
+                          color: activeCategory === category.SubCategory ? theme.palette.basecolorCode.main : 'inherit',
                         },
                         '&:hover': {
-                          backgroundColor: '#3bb77e1c',
-                          color: "#3BB77E"
+                          backgroundColor: `${theme.palette.basecolorCode.main}15`,
+                          color: theme.palette.basecolorCode.main
                         },
                       }}
                     >
@@ -351,25 +352,71 @@ const ProductList = () => {
 
           {/* Right-side Content Area */}
           <Grid item xs={offerProducts === null && relatedProducts === null && newProducts === null ? 9.5 : 12} md={offerProducts === null && relatedProducts === null && newProducts === null ? 10 : 12}>
-            <Grid container sx={{ px: { xs: 0, md: 0 }, justifyContent: "flex-start", gap: "0px 18px" }}>
-              <Box sx={{ width: '100%', display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <Typography sx={{ py: { xs: 1, md: 3 }, fontSize: { xs: 20, md: 28 }, fontFamily: "inherit", fontWeight: 600, color: '#F44336' }} variant="h4">
-                  {activeCategory ? activeCategory : subCategoryName}
-                </Typography>
-                <Box sx={{ minWidth: { xs: 100, md: 250 } }}>
+            <Grid container sx={{ px: { xs: 0, md: 0 }, justifyContent: "flex-start" }}>
+              
+              {/* Premium Category Header */}
+              <Box sx={{ 
+                width: '100%', 
+                mb: 4, 
+                p: { xs: 3, md: 5 }, 
+                borderRadius: '24px', 
+                backgroundColor: theme.palette.shadowcolorCode?.main || '#fdf5f5',
+                display: "flex", 
+                flexDirection: { xs: 'column', md: 'row' },
+                justifyContent: "space-between", 
+                alignItems: { xs: 'flex-start', md: 'center' },
+                gap: { xs: 3, md: 0 }
+              }}>
+                <Box display="flex" alignItems="center" gap={2}>
+                  <Box sx={{ 
+                    p: 2, 
+                    borderRadius: '16px', 
+                    backgroundColor: theme.palette.basecolorCode.main,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}>
+                    <LocalDiningIcon sx={{ color: '#fff', fontSize: 32 }} />
+                  </Box>
+                  <Box>
+                    <Typography variant="overline" sx={{ fontWeight: 700, letterSpacing: 1.5, color: theme.palette.lightblackcolorCode.main }}>
+                      Farm Fresh Selection
+                    </Typography>
+                    <Typography sx={{ fontSize: { xs: 24, md: 36 }, fontFamily: "inherit", fontWeight: 800, color: theme.palette.lightblackcolorCode.main, textTransform: 'capitalize' }} variant="h1">
+                      {activeCategory ? activeCategory : subCategoryName}
+                    </Typography>
+                  </Box>
+                </Box>
+
+                <Box sx={{ minWidth: { xs: '100%', md: 250 } }}>
+                  <Typography variant="caption" sx={{ fontWeight: 600, color: 'text.secondary', display: 'block', mb: 1, ml: 1 }}>
+                    SORT BY
+                  </Typography>
                   <FormControl fullWidth>
                     <Select
                       id="productFilter"
                       value={productFilterName}
                       size="small"
-                      sx={{ textAlign: "left" }}
+                      sx={{ 
+                        textAlign: "left", 
+                        borderRadius: '30px', 
+                        backgroundColor: '#fff',
+                        fontWeight: 600,
+                        '& .MuiOutlinedInput-notchedOutline': {
+                          border: 'none'
+                        },
+                        boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
+                        '&:hover': {
+                          boxShadow: '0 6px 16px rgba(0,0,0,0.08)',
+                        }
+                      }}
                       onChange={handleProductFilterChange}
                     >
-                      <MenuItem value={"All products"}>All products</MenuItem>
-                      <MenuItem value={"Price(Low > High)"}>Price(Low to High)</MenuItem>
-                      <MenuItem value={"Price(High > Low)"}>Price(High to Low)</MenuItem>
-                      <MenuItem value={"Alphabetical"}>Alphabetical</MenuItem>
-                      <MenuItem value={"Alphabetical Reverse"}>Alphabetical Reverse</MenuItem>
+                      <MenuItem value={"All products"}>Featured Items</MenuItem>
+                      <MenuItem value={"Price(Low > High)"}>Price (Low to High)</MenuItem>
+                      <MenuItem value={"Price(High > Low)"}>Price (High to Low)</MenuItem>
+                      <MenuItem value={"Alphabetical"}>Alphabetical (A-Z)</MenuItem>
+                      <MenuItem value={"Alphabetical Reverse"}>Alphabetical (Z-A)</MenuItem>
                     </Select>
                   </FormControl>
                 </Box>
@@ -377,9 +424,9 @@ const ProductList = () => {
 
               {/* Render filtered product list */}
               <div className={offerProducts === null && relatedProducts === null && newProducts === null ? "grid h-full w-full grid-cols-2 content-start gap-x-3 overflow-auto md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 pb-24 no-scrollbar" : "grid h-full w-full grid-cols-2 content-start gap-x-3 overflow-auto md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 pb-24 no-scrollbar"}>
-                {productLists.length > 0 ? (
-                  productLists.map((product) => (
-                    <Box key={product.id} sx={{ mb: 3 }}>
+                {filteredProductLists.length > 0 ? (
+                  filteredProductLists.map((product, index) => (
+                    <Box key={product.Id || product.Productid || index} sx={{ mb: 3 }}>
                       <ProductCard product={product} isLoading={loading} offerProducts={offerProducts} relatedProducts={relatedProducts} newProducts={newProducts} />
                     </Box>
                   ))
