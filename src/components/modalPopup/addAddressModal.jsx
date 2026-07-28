@@ -26,6 +26,8 @@ const style = {
 
 const mapContainerStyle = { width: '100%', height: '100%' };
 
+const libraries = ['places'];
+
 const AddAddressModal = ({ EditAddressModalOpen = true, AddressModalOpen, handleAddressModalClose, AddressDetails, UserId, setUserId, fetchCustomerAddress }) => {
     const [markerPosition, setMarkerPosition] = useState({ lat: 13.0843, lng: 80.2705 });
     const defaultAddressDetails = AddressDetails || {};
@@ -47,7 +49,7 @@ const AddAddressModal = ({ EditAddressModalOpen = true, AddressModalOpen, handle
 
     const { isLoaded } = useLoadScript({
         googleMapsApiKey: ServerURL.MAP_KEY,
-        libraries: ['places'],
+        libraries,
     });
 
     const mapRef = useRef();

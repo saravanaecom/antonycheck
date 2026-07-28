@@ -12,9 +12,6 @@ import { Container } from '@mui/material';
 import { ImagePathRoutes } from '../../routes/ImagePathRoutes';
 import { API_FetchCategory } from '../../services/categoryServices';
 import { useTheme } from '@mui/material/styles';
-import AllCategories from '../../assets/All-categories.png';
-import TopOffers from '../../assets/top-offers.png';
-import NewProducts from '../../assets/new-products.png';
 
 const TopCategory = (props) => {
   const [categoryValue, setCategoryValue] = useState(false);
@@ -24,23 +21,15 @@ const TopCategory = (props) => {
   const location = useLocation();
   const theme = useTheme();
   const [isActiveCategory, setIsActiveCategory] = React.useState(false); 
-  const [isScrolled, setIsScrolled] = useState(true);
-   const backgroundColorCaterogy='#f5f5f5'
+  const [isScrolled, setIsScrolled] = useState(false);
+  
+  const backgroundColorCaterogy = '#ffffff';
+
   const handleCategoryClickChange = (event, newValue) => {
     const selectedCategoryId = event.currentTarget.id; 
     setCategoryValue(newValue); 
     navigate(`/product-list?pcid=${btoa(selectedCategoryId)}&pcname=${btoa(newValue)}`);
   };
-
-  function handleViewBtnClick (id, value){
-    if(id !== 'all_categories'){
-      navigate(`/product-list?pcid=${btoa(id)}&pcname=${btoa(value)}`);
-    }
-    else{
-      navigate(`/categories?cid=${btoa(id)}&cname=${btoa(value)}`);
-    }
-  };
-
 
   const FetchTopCategoryLists = async () => {
     try {
@@ -52,43 +41,35 @@ const TopCategory = (props) => {
       setIsLoading(false);
     }
   };
-// scroll function start
-useEffect(() => {   
- 
-  
-  const handleScroll = () => {
-    if (window.scrollY > 150) {
-      setIsScrolled(true);
-    } else {
-      setIsScrolled(false);
-    }
-  };
 
-  window.addEventListener('scroll', handleScroll);
-  return () => {
-    window.removeEventListener('scroll', handleScroll);
-  };
-}, );
+  useEffect(() => {   
+    const handleScroll = () => {
+      if (window.scrollY > 100) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
 
-
-//scroll function end
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
   useEffect(() => {
     FetchTopCategoryLists();
     if(location.pathname.startsWith('/product-list')){
       setIsActiveCategory(true);
-    }
-    else{
+    } else {
       setIsActiveCategory(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [location.pathname]);
 
   useEffect(() => {
     if (props.get_catgory_lists && props.get_catgory_lists.length > 0) {
-      // Set categories from Redux store if available
-      // setCategoryLists(props.get_catgory_lists);
-      setIsLoading(false); // Data is loaded, stop the loading state
+      setIsLoading(false);
     }
 
     const params = new URLSearchParams(location.search);
@@ -98,163 +79,162 @@ useEffect(() => {
       const decodedPcid = atob(pcid);
       const decodedPcname = atob(pcname);
       setCategoryValue(decodedPcname);      
+    } else {
+      setCategoryValue(false);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.get_catgory_lists]);
+  }, [props.get_catgory_lists, location.search]);
 
   return (
-    <Box position={isScrolled ? 'sticky' : 'relative'}   elevation={isScrolled ? 7 : 0} sx={{ Width:{sm:'100%',md:'1200px'},  color: theme.palette.basecolorCode.main, // Set the text color for the active tab
-    backgroundColor: backgroundColorCaterogy,
-    borderColor: '#ae2934', height:{md:'120px'}, borderBottom: isScrolled ? 'none' : '1px solid #ddd',
-    mb:{md:'10px'},
-    zIndex: 9,
-    top: 0,
-    }}> 
-      <Container
-        maxWidth="xl"
-        sx={{ pt: 2, pb: 20, p: { xs: 0, sm: 0 }, alignItems: 'center', }}
-       
-      >
+    <Box 
+      position={isScrolled ? 'sticky' : 'relative'}   
+      elevation={isScrolled ? 4 : 0} 
+      sx={{ 
+        width: '100%',  
+        backgroundColor: backgroundColorCaterogy,
+        borderBottom: isScrolled ? `1px solid ${theme.palette.shadowcolorCode?.main || '#f0f0f0'}` : 'none',
+        boxShadow: isScrolled ? '0 4px 12px rgba(0,0,0,0.05)' : 'none',
+        zIndex: 99,
+        top: 0,
+        transition: 'all 0.3s ease',
+        py: { xs: 1, md: 2 } // Compact padding instead of the massive pb: 20
+      }}
+    > 
+      <Container maxWidth="xl" sx={{ p: 0 }}>
         <Tabs 
           value={categoryValue}
           onChange={handleCategoryClickChange}
           variant="scrollable"
-          scrollButtons={false}
-          aria-label="scrollable prevent tabs example"
+          scrollButtons="auto"
+          allowScrollButtonsMobile
+          aria-label="scrollable category tabs"
           sx={{
-      
             alignItems: 'center',
-            ml:{md:'400px'},
-        //    pt:{md:'13px'},
-
+            minHeight: 'auto',
+            // horizontal padding so scroll buttons don't cover content
+            px: { xs: 2, md: 4 },
+            // ensure scroller does not clip expanded/hovered avatars
+            '.MuiTabs-scroller': { overflow: 'visible' },
+            '.MuiTab-root': { overflow: 'visible' },
+            position: 'relative',
             '.MuiTabs-indicator': {
-              backgroundColor: '#ae2934',
-              
-            
+              display: 'none', // Hide standard indicator
             },
+            '.MuiTabs-scrollButtons': {
+              color: theme.palette.basecolorCode.main,
+              width: '40px',
+              height: '40px',
+              borderRadius: '50%', // Make the hover background perfectly circular
+              // position buttons outside the tab area so they don't overlap avatars
+              position: 'absolute',
+              top: '50%',
+              transform: 'translateY(-50%)',
+              zIndex: 12,
+              '&.MuiTabs-scrollButtons:first-of-type': {
+                left: -18
+              },
+              '&.MuiTabs-scrollButtons:last-of-type': {
+                right: -18
+              },
+              '&:hover': {
+                backgroundColor: 'rgba(0,0,0,0.04)', // Subtle gray background on hover instead of solid color
+              },
+              '&.Mui-disabled': { opacity: 0.3 }
+            }
           }}
         >
-          {/* Three static tabs */}
-          {/* <Tab            
-            // sx={{
-            //   cursor: "pointer",
-            //   '&.Mui-selected': {
-            //     color: theme.palette.basecolorCode.main,
-            //     backgroundColor: theme.palette.shadowcolorCode.main,
-            //     borderColor: theme.palette.basecolorCode.main,
-            //   },
-            // }}
-            // value="all_categories"
-            // id="all_categories"
-            // onClick={() => handleViewBtnClick('all_categories', 'All Categories')}
-            // label={
-            //   <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            //     <Avatar
-            //       src={AllCategories}
-            //       sx={{ width: 55, height: 55, mb: 0.5, boxShadow: `0px 0px 40px 20px ${theme.palette.shadowcolorCode.main}` }}
-            //     />
-            //     <Typography variant="caption" sx={{ textAlign: 'center', textTransform: 'capitalize', fontWeight: 600, fontSize: '14px', color: theme.palette.colorCode.main}}>
-            //       All Categories
-            //     </Typography>
-            //   </Box>
-            // }
-          /> */}
-
-          {/* <Tab
-            // sx={{
-            //   cursor: "pointer",
-            //   '&.Mui-selected': {
-            //     color: theme.palette.basecolorCode.main,
-            //     backgroundColor: theme.palette.shadowcolorCode.main,
-            //     borderColor: theme.palette.basecolorCode.main,
-            //   },
-            // }}
-            // value="offer_product"
-            // id="offer_product"
-            // onClick={() => handleViewBtnClick('offer_product', 'Offer Products')}
-            // label={
-            //   <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            //     <Avatar
-            //       src={TopOffers}
-            //       sx={{ width: 55, height: 55, mb: 0.5, boxShadow: `0px 0px 40px 20px ${theme.palette.shadowcolorCode.main}` }}
-            //     />
-            //     <Typography variant="caption" sx={{ textAlign: 'center', textTransform: 'capitalize', fontWeight: 600, fontSize: '14px', color: theme.palette.colorCode.main}}>
-            //       Top Offers
-            //     </Typography>
-            //   </Box>
-            // }
-          /> */}
-
-          {/* <Tab
-            // sx={{
-            //   cursor: "pointer",
-            //    '&.Mui-selected': isActiveCategory ? {
-            //     color: theme.palette.basecolorCode.main, // Set the text color for the active tab
-            //     backgroundColor: theme.palette.shadowcolorCode.main,
-            //     borderColor: theme.palette.basecolorCode.main,
-            //   } : ''
-            // }}
-            // value="new_product"
-            // id="new_product"
-            // onClick={() => handleViewBtnClick('new_product', 'New Products')}
-            // label={
-            //   <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            //     <Avatar
-            //       src={NewProducts}
-            //       sx={{ width: 55, height: 55, mb: 0.5, boxShadow: `0px 0px 40px 20px ${theme.palette.shadowcolorCode.main}` }}
-            //     />
-            //     <Typography variant="caption" sx={{ textAlign: 'center', textTransform: 'capitalize', fontWeight: 600, fontSize: '14px', color: theme.palette.colorCode.main }}>
-            //       New Arrivals
-            //     </Typography>
-            //   </Box>
-            // }
-          /> */}
-
           {/* Dynamically loaded category list */}
           {isLoading ? (
-            [...Array(18)].map((_, index) => (
+            [...Array(8)].map((_, index) => (
               <Tab
                 key={index}
+                disabled
+                sx={{ minWidth: 'auto', p: 1, mx: 1 }}
                 label={
-                  <Box sx={{ display: 'flex', flexDirection: 'column',  }}>
-                    <Skeleton variant="circular" width={55} height={55} />
-                    <Skeleton variant="text" width={70} height={20} sx={{ mt: 0.5 }} />
+                  <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    <Skeleton variant="circular" width={65} height={65} />
+                    <Skeleton variant="text" width={60} height={16} sx={{ mt: 1 }} />
                   </Box>
                 }
               />
             ))
           ) : (
-            categoryLists.map((item, index) => (
-              <Tab
-                sx={{
+            categoryLists.map((item, index) => {
+              const isSelected = isActiveCategory && categoryValue === item.Category;
               
-                  cursor: "pointer",
-                  borderRadius:'20px',
-                  width:'150px',
-                  
-                  '&.Mui-selected': isActiveCategory ? {
-                    color: theme.palette.basecolorCode.main, // Set the text color for the active tab
-                    backgroundColor: '#f5f5f5',
-                    borderColor:'#f5f5f5',
-                  } : ''
-                }}
-                key={index}
-                id={item.Id}
-                value={item.Category}
-                label={
-                  <Box id={item.Id} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', }}>
-                    <Avatar
-                      src={ImagePathRoutes.CategoryImagePath + item.ImagePath}
-                      sx={{ width: 70, height: 70, mb: {md:1 ,sm:0.5}, boxShadow: `0px 0px 40px 20px ${'#f5f5f5'}` }}
-                      alt={item.Category}
-                    />
-                    <Typography variant="caption" sx={{ textAlign: 'center', textTransform: 'capitalize', fontWeight: 'bold', fontSize: '14px', color: ' black',ml:'18px' }}>
-                      {item.Category}
-                    </Typography>
-                  </Box>
-                }
-              />
-            ))
+              return (
+                <Tab
+                  key={index}
+                  id={item.Id}
+                  value={item.Category}
+                  sx={{
+                    minWidth: 'auto',
+                    p: { xs: 0.5, md: 1 },
+                    mx: { xs: 1, md: 2 }, // Slightly increased spacing between bubbles
+                    position: 'relative',
+                    zIndex: 0,
+                    borderRadius: '12px',
+                    transition: 'transform 0.18s, z-index 0.18s',
+                    // use scale instead of translate to avoid lateral overlap
+                    '&:hover': {
+                      transform: 'scale(1.06)',
+                      zIndex: 5 // ensure hovered bubble stacks above neighbours
+                    }
+                  }}
+                  label={
+                      <Box 
+                      id={item.Id} 
+                      sx={{ 
+                        display: 'flex', 
+                        flexDirection: 'column', 
+                        alignItems: 'center',
+                        gap: 1,
+                        // ensure the avatar container does not create unexpected overlap
+                        overflow: 'visible'
+                      }}
+                    >
+                      {/* Premium Ring around Avatar when selected */}
+                      <Box 
+                        sx={{
+                          padding: '3px',
+                          borderRadius: '50%',
+                          background: isSelected ? `linear-gradient(45deg, ${theme.palette.basecolorCode.main}, #ff9800)` : 'transparent',
+                          transition: 'all 0.3s'
+                        }}
+                      >
+                        <Avatar
+                          src={ImagePathRoutes.CategoryImagePath + item.ImagePath}
+                          sx={{ 
+                              width: { xs: 60, md: 75 }, 
+                              height: { xs: 60, md: 75 }, 
+                              boxShadow: isSelected ? 'none' : '0 4px 10px rgba(0,0,0,0.1)',
+                              border: '3px solid #fff',
+                              backgroundColor: '#f9f9f9',
+                              position: 'relative',
+                              zIndex: isSelected ? 8 : 2,
+                              transition: 'transform 0.18s, box-shadow 0.18s'
+                            }}
+                          alt={item.Category}
+                        />
+                      </Box>
+                      <Typography 
+                        variant="caption" 
+                        sx={{ 
+                          textAlign: 'center', 
+                          textTransform: 'capitalize', 
+                          fontWeight: isSelected ? 800 : 600, 
+                          fontSize: { xs: '12px', md: '14px' }, 
+                          color: isSelected ? theme.palette.basecolorCode.main : 'text.secondary',
+                          transition: 'color 0.3s'
+                        }}
+                      >
+                        {item.Category}
+                      </Typography>
+                    </Box>
+                  }
+                />
+              );
+            })
           )}
         </Tabs>
       </Container>
@@ -264,7 +244,7 @@ useEffect(() => {
 
 const mapStateToProps = (state) => {
   return {
-    get_catgory_lists: state.get_catgory_lists, // Get category lists from Redux state
+    get_catgory_lists: state.get_catgory_lists,
   };
 };
 

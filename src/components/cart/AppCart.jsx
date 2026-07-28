@@ -150,7 +150,11 @@ export default function AppCart({ CartDrawerOpen, setLoginDrawerOpen, handleAuth
       handleAuthDrawerToggle(false);
       setLoginDrawerOpen(true);  
     }
-    else if (selectedAddress !== 'No address selected') {
+    else if (
+      selectedAddress && 
+      selectedAddress !== 'No address selected' && 
+      (selectedAddress.Address1 || selectedAddress.City || selectedAddress.Pincode)
+    ) {
       const CartTotalAmount = cartTotalAmountCheck();
       FetchMinimumOrderAmount();
 

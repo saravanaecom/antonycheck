@@ -162,16 +162,16 @@ const ProductItemCard = ({ product }) => {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          background: theme.palette.shadowcolorCode.main,
+          background: `${theme.palette.basecolorCode.main}15`,
           border: `1px solid ${theme.palette.basecolorCode.main}`,
           color: theme.palette.basecolorCode.main,
           fontFamily: 'inherit',
           marginRight: 0,
           padding: { xs: '4px 0px', sm: '5px 0px', md: '5px 0px' },
           '&:hover': {
-            background: theme.palette.shadowcolorCode.main,
+            background: theme.palette.basecolorCode.main,
             border: `1px solid ${theme.palette.basecolorCode.main}`,
-            color: theme.palette.basecolorCode.main,
+            color: '#ffffff',
           }
         }}
       >
@@ -181,7 +181,7 @@ const ProductItemCard = ({ product }) => {
           disabled={quantity === 0}
           sx={{
             width: '25%',
-            color: theme.palette.basecolorCode.main,
+            color: 'inherit',
             fontFamily: 'inherit',
           }}
         >
@@ -191,7 +191,7 @@ const ProductItemCard = ({ product }) => {
           variant="body2"
           sx={{
             width: '50%',
-            color: theme.palette.basecolorCode.main,
+            color: 'inherit',
             fontFamily: 'inherit',
           }}
         >
@@ -205,7 +205,7 @@ const ProductItemCard = ({ product }) => {
           onClick={(e) => { handleIncrement(e); }}
           sx={{
             width: '25%',
-            color: theme.palette.basecolorCode.main,
+            color: 'inherit',
             fontFamily: 'inherit',
           }}
         >

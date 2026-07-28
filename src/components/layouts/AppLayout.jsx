@@ -98,7 +98,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {    
-    setFavouriteLists: (data) => dispatch({type: actionType.GET_GLOBAL_FAVOURITE_LISTS, payload: data})
+    setFavouriteLists: (data) => dispatch({type: actionType.GET_GLOBAL_FAVOURITE_LISTS, payload: data}),
+    SetGlobalSettings: (data) => dispatch({type: actionType.GET_GLOBAL_SETTINGS, payload: data}),
+    SetGlobalCategories: (data) => dispatch({type: actionType.GET_GLOBAL_CATEGORIES, payload: data})
   };
 };
 

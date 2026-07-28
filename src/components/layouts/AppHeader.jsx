@@ -177,17 +177,23 @@ export default function AppHeader() {
 
             {/* Navigation and User Action Section */}
             <Grid item xs={12} sm="auto" md="auto" sx={{ display: { xs: 'none', sm: 'flex', md: 'flex' }, justifyContent: 'flex-end', alignItems: 'center', gap: '16px' }}>
-              <Button sx={{ 
-                textTransform: 'none', 
-                display: { xs: 'none', sm: 'none', md: 'block' },
-                border: `1px solid ${theme.palette.basecolorCode.main}`,
-                color: theme.palette.basecolorCode.main,
-                '&:hover': {
-                  backgroundColor: theme.palette.basecolorCode.main,
-                  color: '#fff'
-                }
-              }}>
-                <Link to="/" sx={{ textDecoration: 'none' }}>Home</Link>
+              <Button 
+                component={Link}
+                to="/"
+                sx={{ 
+                  textTransform: 'none', 
+                  display: { xs: 'none', sm: 'none', md: 'block' },
+                  color: theme.palette.basecolorCode.main,
+                  fontWeight: 600,
+                  borderRadius: '24px',
+                  px: 3,
+                  py: 0.8,
+                  transition: 'all 0.3s ease',
+                  '&:hover': {
+                    backgroundColor: `${theme.palette.basecolorCode.main}15`, // Light transparent background
+                  }
+                }}>
+                Home
               </Button>
               
               {!isAuthenticated && (
@@ -197,10 +203,13 @@ export default function AppHeader() {
                     sx={{ 
                       color: theme.palette.basecolorCode.main,
                       textTransform: 'none',
-                      border: `1px solid ${theme.palette.basecolorCode.main}`,
+                      fontWeight: 600,
+                      borderRadius: '24px',
+                      px: 3,
+                      py: 0.8,
+                      transition: 'all 0.3s ease',
                       '&:hover': {
-                        backgroundColor: theme.palette.basecolorCode.main,
-                        color: '#fff'
+                        backgroundColor: `${theme.palette.basecolorCode.main}15`,
                       }
                     }}
                     onClick={handleAuthDrawerToggle}
@@ -210,19 +219,27 @@ export default function AppHeader() {
 
                   <Button
                     id={"login_btn"}
+                    variant="contained"
                     sx={{ 
-                      color: theme.palette.basecolorCode.main,
+                      color: '#fff',
+                      backgroundColor: theme.palette.basecolorCode.main,
                       textTransform: 'none',
-                      border: `1px solid ${theme.palette.basecolorCode.main}`,
+                      fontWeight: 600,
+                      borderRadius: '24px',
+                      px: 3,
+                      py: 0.8,
+                      boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                      transition: 'all 0.3s ease',
                       '&:hover': {
-                        backgroundColor: theme.palette.basecolorCode.main,
-                        color: '#fff'
+                        backgroundColor: theme.palette.basecolorCode.secondary || theme.palette.basecolorCode.main,
+                        boxShadow: '0 6px 16px rgba(0,0,0,0.15)',
+                        transform: 'translateY(-1px)'
                       }
                     }}
                     onClick={handleAuthDrawerToggle}
                   >
                     Sign In
-                    <PersonIcon sx={{ ml: 1 }} /> 
+                    <PersonIcon sx={{ ml: 1, fontSize: '1.2rem' }} /> 
                   </Button>
                 </>
               )}
@@ -230,18 +247,31 @@ export default function AppHeader() {
               {isAuthenticated && (
                 <Button
                   id={"profile_btn"}
+                  component={Link}
+                  to="/myaccount"
+                  variant="contained"
                   sx={{ 
-                    color: theme.palette.basecolorCode.main,
+                    color: '#fff',
+                    backgroundColor: theme.palette.basecolorCode.main,
                     textTransform: 'none',
-                    border: `1px solid ${theme.palette.basecolorCode.main}`,
+                    fontWeight: 600,
+                    borderRadius: '24px',
+                    px: 3,
+                    py: 0.8,
+                    boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                    transition: 'all 0.3s ease',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 1,
                     '&:hover': {
-                      backgroundColor: theme.palette.basecolorCode.main,
-                      color: '#fff'
+                      backgroundColor: theme.palette.basecolorCode.secondary || theme.palette.basecolorCode.main,
+                      boxShadow: '0 6px 16px rgba(0,0,0,0.15)',
+                      transform: 'translateY(-1px)'
                     }
                   }}
                 >
-                  <PersonIcon sx={{ ml: 1 }} />
-                  <Typography sx={{ fontFamily: 'inherit', fontWeight: 600 }}><Link to={"/myaccount"} sx={{ textDecoration: 'none' }}>{isAuthenticatedName !== '' ? isAuthenticatedName : 'Profile'}</Link></Typography>
+                  <PersonIcon sx={{ fontSize: '1.2rem' }} />
+                  {isAuthenticatedName !== '' ? isAuthenticatedName : 'Profile'}
                 </Button>
               )}
 

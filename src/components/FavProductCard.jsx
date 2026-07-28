@@ -321,12 +321,12 @@ const FavCard = ({ list, handleRemoveFavProduct }) => {
                                 width: 'auto',
                                 textTransform: 'none',
                                 fontFamily: 'inherit',
-                                border: '1px solid #dc3545',
-                                backgroundColor: '#dc3545',
+                                border: `1px solid ${theme.palette.basecolorCode.main}`,
+                                backgroundColor: theme.palette.basecolorCode.main,
                                 color: theme.palette.whitecolorCode.main,
                                 '&:hover': {
-                                    background: '#dc3545',
-                                    border: '1px solid #dc3545',
+                                    background: theme.palette.basecolorCode.main,
+                                    border: `1px solid ${theme.palette.basecolorCode.main}`,
                                     color: theme.palette.whitecolorCode.main
                                 }
                             }}
@@ -347,12 +347,12 @@ const FavCard = ({ list, handleRemoveFavProduct }) => {
                                 p: '0px',
                                 textTransform: 'none',
                                 fontFamily: 'inherit',
-                                border: '1px solid #dc3545',
-                                color: '#dc3545',
+                                border: `1px solid ${theme.palette.basecolorCode.main}`,
+                                color: theme.palette.basecolorCode.main,
                                 '&:hover': {
-                                    background: '#FFF',
-                                    border: '1px solid #dc3545',
-                                    color: '#dc3545'
+                                    background: theme.palette.whitecolorCode.main,
+                                    border: `1px solid ${theme.palette.basecolorCode.main}`,
+                                    color: theme.palette.basecolorCode.main
                                 }
                             }}
                         >

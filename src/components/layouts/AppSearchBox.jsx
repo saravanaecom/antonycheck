@@ -1,7 +1,8 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { TextField, Autocomplete, List, ListItem, ListItemText, ListItemAvatar, Avatar, Typography } from '@mui/material';
+import { TextField, Autocomplete, List, ListItem, ListItemText, ListItemAvatar, Avatar, Typography, InputAdornment } from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
 import { useTheme } from '@mui/material/styles';
 import { ServerURL } from '../../server/serverUrl';
 import { ImagePathRoutes } from '../../routes/ImagePathRoutes';
@@ -32,14 +33,16 @@ const AppSearchBox = () => {
     }
   };
 
-  //View product description page
-  const handleProductClick = (event) => {
-    const pdId = event.currentTarget.id;
-    const pdValue = event.currentTarget.getAttribute('name');   
-    setSearchLists([]);
-    setSearchKeyword('');
-    navigate(`/product-details?pdid=${encodeURIComponent(btoa(pdId))}&pdname=${encodeURIComponent(btoa(pdValue))}`);
-    window.scrollTo(0, 0);
+  // Handle native selection (Click or Enter key)
+  const handleOptionSelect = (event, newValue) => {
+    if (newValue) {
+      const pdId = newValue.Productid ? newValue.Productid : newValue.Id;
+      const pdValue = newValue.Description;
+      setSearchLists([]);
+      setSearchKeyword('');
+      navigate(`/product-details?pdid=${encodeURIComponent(btoa(pdId))}&pdname=${encodeURIComponent(btoa(pdValue))}`);
+      window.scrollTo(0, 0);
+    }
   };
 
   return (
@@ -50,45 +53,60 @@ const AppSearchBox = () => {
         getOptionLabel={(option) => option.Description}
         inputValue={SearchKeyword}
         onInputChange={(event, newValue) => handleSearchProducts(newValue)} 
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            label="Search for products"
-            variant="outlined"
-            sx={{
-              width: { xs: '100%', sm: '80%', md: '100%' },
-              padding: 0,
-              '& .MuiOutlinedInput-root': {
-                '& fieldset': {
-                  borderColor: theme.palette.basecolorCode.main,
-                },
-                '&:hover fieldset': {
-                  borderColor: theme.palette.basecolorCode.main,
-                },
-                '&.Mui-focused fieldset': {
-                  borderColor: theme.palette.basecolorCode.main, 
-                },
-              },
-              '& .MuiInputLabel-root': {
-                color: 'gray', 
-                '&.Mui-focused': {
-                  color: theme.palette.basecolorCode.main,
-                },
-                '&:hover': {
-                  color: theme.palette.basecolorCode.main,
-                },
-              },
-            }}
-            autoComplete={"off"}
-            size="small"
-          />
-        )}
+        onChange={handleOptionSelect}
+        renderInput={(params) => {
+          // We must merge our custom InputProps with params.InputProps
+          const { InputProps, ...restParams } = params;
+          return (
+            <TextField
+              {...restParams}
+              placeholder="Search for premium products..."
+              variant="outlined"
+              InputProps={{
+                ...InputProps,
+                startAdornment: (
+                  <InputAdornment position="start" sx={{ pl: 1 }}>
+                    <SearchIcon sx={{ color: 'text.secondary' }} />
+                  </InputAdornment>
+                ),
+                sx: {
+                  ...InputProps.sx,
+                  borderRadius: '50px',
+                  backgroundColor: '#f5f5f5',
+                  transition: 'all 0.3s ease',
+                  '&:hover': {
+                    backgroundColor: '#eeeeee',
+                  },
+                  '&.Mui-focused': {
+                    backgroundColor: '#fff',
+                    boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
+                  }
+                }
+              }}
+              sx={{
+                width: { xs: '100%', sm: '80%', md: '100%' },
+                '& .MuiOutlinedInput-root': {
+                  '& fieldset': {
+                    border: '1px solid transparent',
+                  },
+                  '&:hover fieldset': {
+                    border: '1px solid transparent',
+                  },
+                  '&.Mui-focused fieldset': {
+                    border: `1px solid ${theme.palette.basecolorCode.main}`, 
+                  },
+                }
+              }}
+              autoComplete={"off"}
+              size="small"
+            />
+          );
+        }}
         renderOption={(props, option) => (
           <List {...props} key={option.Id} 
           id={option?.Productid ? option.Productid : option?.Id}
           name={option.Description}
           value={option?.Productid ? option.Productid : option?.Id}
-          onClick={handleProductClick}
           >
             <ListItem style={{ display: 'flex', alignItems: 'center', p: 0 }}>
               <ListItemAvatar>

@@ -357,7 +357,7 @@ const ProductCard = ({ get_fav_lists, product, isLoading, offerProducts, related
               right: '12px',
               background: 'rgba(255, 255, 255, 0.25)',
               backdropFilter: 'blur(8px)',
-              border: '1px solid rgba(255, 255, 255, 0.18)',
+              border: `1px solid ${theme.palette.basecolorCode.main}30`,
               borderRadius: '50%',
               padding: '8px',
               boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
@@ -365,17 +365,17 @@ const ProductCard = ({ get_fav_lists, product, isLoading, offerProducts, related
               zIndex: 2,
               '&:hover': {
                 transform: 'scale(1.1)',
-                background: 'rgba(255, 255, 255, 0.35)',
+                background: `${theme.palette.basecolorCode.main}15`,
               }
             }}
             id={product.isFavorite !== null ? product.isFavorite : isFavoriteProduct}
           >
             {isFavoriteProduct !== 0 ? <FavoriteIcon size="small"   sx={{ 
-                      color: '#ee4372',
+                      color: theme.palette.basecolorCode.main,
                       fontSize: '20px',
-                      filter: 'drop-shadow(0 2px 2px rgba(238, 67, 114, 0.2))'
+                      filter: 'drop-shadow(0 2px 2px rgba(0, 0, 0, 0.1))'
                     }} 
-                    onClick={(event) => { handleRemoveFavProduct(product?.Productid ? product.Productid : product?.Id, event); }} /> : <FavoriteBorderIcon onClick={(event) => { handleAddFavProduct(product?.Productid ? product.Productid : product?.Id, event, 'Add'); }} size="small" sx={{ color: '#ee4372', fontSize: '18px' }} />}
+                    onClick={(event) => { handleRemoveFavProduct(product?.Productid ? product.Productid : product?.Id, event); }} /> : <FavoriteBorderIcon onClick={(event) => { handleAddFavProduct(product?.Productid ? product.Productid : product?.Id, event, 'Add'); }} size="small" sx={{ color: theme.palette.basecolorCode.main, fontSize: '18px' }} />}
           </Box>
  
         </Box>
@@ -406,8 +406,8 @@ const ProductCard = ({ get_fav_lists, product, isLoading, offerProducts, related
       position: 'absolute',
       bottom:'150px',
       right: '8px',
-      backgroundColor: '#ee4372',
-      color: '#fff',
+      backgroundColor: theme.palette.basecolorCode.main,
+      color: '#ffffff',
       fontSize: '12px',
       fontWeight: 'bold',
       borderRadius: '4px',
@@ -440,7 +440,7 @@ const ProductCard = ({ get_fav_lists, product, isLoading, offerProducts, related
                   marginBottom: '8px',
                   transition: 'color 0.2s ease',
                   '&:hover': {
-                    color: '#0984e3',
+                    color: theme.palette.basecolorCode.main,
                   },
                   color: theme.palette.lightblackcolorCode.main
                 }}
@@ -462,7 +462,7 @@ const ProductCard = ({ get_fav_lists, product, isLoading, offerProducts, related
             {/* Variants / Unit */}
             <Box sx={{ width: '100%', marginBottom: '10px' }}>
               <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '12px', mb: 1 }}>
-                <Typography sx={{ fontSize: '12px', color: '#444', fontWeight: 600 }}>
+                <Typography sx={{ fontSize: '12px', color: theme.palette.lightblackcolorCode.main, fontWeight: 600 }}>
                   {unitText}
                 </Typography>
                 <Typography sx={{ fontSize: '12px', color: product.InStock !== 0 ? '#2e7d32' : '#d32f2f', fontWeight: 700 }}>
@@ -485,14 +485,14 @@ const ProductCard = ({ get_fav_lists, product, isLoading, offerProducts, related
                         transition: 'all 0.2s ease',
                         '&:hover': {
                           borderColor: theme.palette.basecolorCode.main,
-                          backgroundColor: '#f4fbff',
+                          backgroundColor: `${theme.palette.basecolorCode.main}10`,
                         }
                       }}
                     >
                       <Typography sx={{
                         fontSize: '12px',
                         fontWeight: productWeight === weight.WeightType ? 700 : 500,
-                        color: productWeight === weight.WeightType ? theme.palette.basecolorCode.main : '#333',
+                        color: productWeight === weight.WeightType ? theme.palette.basecolorCode.main : theme.palette.lightblackcolorCode.main,
                         whiteSpace: 'nowrap'
                       }}>
                         {weight.WeightType}
@@ -501,7 +501,7 @@ const ProductCard = ({ get_fav_lists, product, isLoading, offerProducts, related
                   ))}
                 </Box>
               ) : (
-                <Typography sx={{ fontSize: '12px', color: '#666', fontWeight: 500 }}>
+                <Typography sx={{ fontSize: '12px', color: theme.palette.lightblackcolorCode.main, fontWeight: 500 }}>
                   {product.UnitType}
                 </Typography>
               )}
@@ -509,21 +509,21 @@ const ProductCard = ({ get_fav_lists, product, isLoading, offerProducts, related
 
             {/* Price and Add to Cart Section */}
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: '12px', marginTop: 'auto', paddingTop: '10px' }}>
-              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', gap: '10px', p: '12px', background: 'rgba(214, 40, 40, 0.06)', borderRadius: '16px', border: '1px solid rgba(214, 40, 40, 0.18)' }}>
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', gap: '10px', p: '12px', background: `${theme.palette.basecolorCode.main}08`, borderRadius: '16px', border: `1px solid ${theme.palette.basecolorCode.main}20` }}>
                 <Box>
-                  <Typography sx={{ fontSize: '11px', color: '#b33030', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+                  <Typography sx={{ fontSize: '11px', color: theme.palette.basecolorCode.main, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
                     Price
                   </Typography>
-                  <Typography sx={{ fontSize: '20px', fontWeight: 700, color: '#d62828' }}>
+                  <Typography sx={{ fontSize: '20px', fontWeight: 700, color: theme.palette.basecolorCode.main }}>
                     ₹{((quantity > 0 ? quantity * effectiveSaleRate : effectiveSaleRate)).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                   </Typography>
                 </Box>
                 {effectiveMRPValue > 0 && (
                   <Box sx={{ textAlign: 'right' }}>
-                    <Typography sx={{ fontSize: '11px', color: '#a33a3a', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+                    <Typography sx={{ fontSize: '11px', color: theme.palette.colorCode.main, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
                       MRP
                     </Typography>
-                    <Typography sx={{ fontSize: '14px', color: '#9d2c2c', textDecoration: 'line-through' }}>
+                    <Typography sx={{ fontSize: '14px', color: theme.palette.colorCode.main, textDecoration: 'line-through' }}>
                       ₹{effectiveMRPValue.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                     </Typography>
                   </Box>
@@ -543,11 +543,12 @@ const ProductCard = ({ get_fav_lists, product, isLoading, offerProducts, related
                         textTransform: 'none',
                         fontWeight: 700,
                         fontSize: '15px',
-                        backgroundColor: '#d62828',
+                        backgroundColor: theme.palette.basecolorCode.main,
                         color: '#ffffff',
-                        boxShadow: '0 14px 30px rgba(214, 40, 40, 0.18)',
+                        boxShadow: `0 14px 30px ${theme.palette.basecolorCode.main}40`,
                         '&:hover': {
-                          backgroundColor: '#b71c1c',
+                          filter: 'brightness(0.9)',
+                          backgroundColor: theme.palette.basecolorCode.main,
                         }
                       }}
                     >
@@ -562,20 +563,21 @@ const ProductCard = ({ get_fav_lists, product, isLoading, offerProducts, related
                           height: '44px',
                           borderRadius: '14px',
                           padding: 0,
-                          backgroundColor: '#d62828',
+                          backgroundColor: theme.palette.basecolorCode.main,
                           color: '#ffffff',
                           fontSize: '20px',
                           fontWeight: 700,
                           '&:hover': {
-                            backgroundColor: '#b71c1c',
+                            filter: 'brightness(0.9)',
+                            backgroundColor: theme.palette.basecolorCode.main,
                           }
                         }}
                       >
                         −
                       </Button>
-                      <Box sx={{ flexGrow: 1, textAlign: 'center', py: '10px', borderRadius: '14px', backgroundColor: '#fff5f5', border: '1px solid rgba(214, 40, 40, 0.18)' }}>
-                        <Typography sx={{ fontSize: '14px', fontWeight: 700, color: '#d62828' }}>{quantity}</Typography>
-                        <Typography sx={{ fontSize: '11px', color: '#a32f2f' }}>Selected: {unitText}</Typography>
+                      <Box sx={{ flexGrow: 1, textAlign: 'center', py: '10px', borderRadius: '14px', backgroundColor: `${theme.palette.basecolorCode.main}08`, border: `1px solid ${theme.palette.basecolorCode.main}40` }}>
+                        <Typography sx={{ fontSize: '14px', fontWeight: 700, color: theme.palette.basecolorCode.main }}>{quantity}</Typography>
+                        <Typography sx={{ fontSize: '11px', color: theme.palette.lightblackcolorCode.main }}>Selected: {unitText}</Typography>
                       </Box>
                       <Button
                         onClick={(e) => { handleIncrement(e); }}
@@ -584,12 +586,13 @@ const ProductCard = ({ get_fav_lists, product, isLoading, offerProducts, related
                           height: '44px',
                           borderRadius: '14px',
                           padding: 0,
-                          backgroundColor: '#d62828',
+                          backgroundColor: theme.palette.basecolorCode.main,
                           color: '#ffffff',
                           fontSize: '20px',
                           fontWeight: 700,
                           '&:hover': {
-                            backgroundColor: '#b71c1c',
+                            filter: 'brightness(0.9)',
+                            backgroundColor: theme.palette.basecolorCode.main,
                           }
                         }}
                       >

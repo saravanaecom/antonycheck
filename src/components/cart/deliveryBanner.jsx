@@ -23,17 +23,17 @@ const DeliveryBanner = () => {
   return (
     <Box
       sx={{
-        background: `linear-gradient(90deg, ${theme.palette.shadowcolorCode.main} 0%, ${theme.palette.shadowcolorCode.main} 100%)`,
+        background: `${theme.palette.basecolorCode.main}15`,
         padding: '7px 20px',
-        color: theme.palette.whitecolorCode.main,
+        color: theme.palette.lightblackcolorCode.main,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'flex-start',
         boxShadow: '0px 1px 2px rgba(0, 0, 0, 0.1)',
       }}
     >      
-      <Box sx={{ display: 'flex', alignItems: 'center', color: theme.palette.basecolorCode.main }}>
-        <LocalOfferIcon size="small" sx={{ marginRight: 1, fontSize: '14px' }} />
+      <Box sx={{ display: 'flex', alignItems: 'center', color: theme.palette.lightblackcolorCode.main }}>
+        <LocalOfferIcon size="small" sx={{ marginRight: 1, fontSize: '14px', color: theme.palette.basecolorCode.main }} />
         <Typography variant="span" sx={{ fontWeight: 'bold', marginRight: 1, fontSize: '12px' }}>
         {SavingsAmount.toLocaleString('en-IN', { style: 'currency', currency: ServerURL.CURRENCY, minimumFractionDigits: 2, maximumFractionDigits: 2 })} saved!
         </Typography>
