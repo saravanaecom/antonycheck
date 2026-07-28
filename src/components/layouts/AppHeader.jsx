@@ -148,9 +148,7 @@ export default function AppHeader() {
               <Link to={"/"}>
                 <AppLogo sx={{ height: '48px', width: 'auto' }} />
               </Link>
-              <Typography variant="h6" sx={{ fontWeight: 700, color: theme.palette.basecolorCode.main, display: { sm: 'none', md: 'flex' } }}>
-                Chicken Express
-              </Typography>
+       
             </Grid>
 
             {/* Hamburger Menu for Mobile */}
