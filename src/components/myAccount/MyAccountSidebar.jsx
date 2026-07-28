@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Avatar, Typography, List, ListItemButton, ListItemIcon, ListItemText, Divider } from '@mui/material';
-import { ExitToApp, ShoppingBag, Favorite, LocationOn, Lock, CardGiftcard, Person } from '@mui/icons-material';
+import { ExitToApp, ShoppingBag, Favorite, LocationOn, Lock, CardGiftcard } from '@mui/icons-material';
 import { useTheme } from '@mui/material/styles';
 
 const navItems = [
