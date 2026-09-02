@@ -3,7 +3,7 @@ import {ServerURL} from '../server/serverUrl';
 
 // Insert My order
 export const API_InsertSaleOrderSave = async (objlist) => {
-    console.log('objlist', objlist);
+    console.log('API_InsertSaleOrderSave request payload:', objlist);
     try {
       const response = await fetch(`${APIRoutes.INSERT_SALE_ORDER_SAVE}`, {
         method: 'POST',
@@ -12,16 +12,23 @@ export const API_InsertSaleOrderSave = async (objlist) => {
           objData: ''
         },
         body: JSON.stringify(objlist)
-      });      
+      });
+
+      console.log('API_InsertSaleOrderSave response status:', response.status);
+
       if (response.ok) {
         const data = await response.json();
-        return data; 
+        console.log('API_InsertSaleOrderSave response data:', data);
+        return data;
       } else {
-        console.error("Error checking existing user");
-        return null;
+        // try to get response text for debugging
+        let text = '';
+        try { text = await response.text(); } catch (e) { text = '<unable to read response text>'; }
+        console.error(`API_InsertSaleOrderSave failed: ${response.status} ${response.statusText}`, text);
+        throw new Error(`InsertSaleOrderSave failed: ${response.status} ${response.statusText} - ${text}`);
       }
     } catch (error) {
-      console.error('Failed to insert favorite product list:', error);
+      console.error('Failed to insert sale order:', error);
       throw error; // Re-throw so the calling function can handle it
     }
   };
