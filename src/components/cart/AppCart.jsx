@@ -99,10 +99,12 @@ export default function AppCart({ CartDrawerOpen, setLoginDrawerOpen, handleAuth
   };
 
   useEffect(() => {
-    if(CartDrawerOpen === true){
+    if (CartDrawerOpen === true) {
       const selectedAddress = JSON.parse(sessionStorage.getItem("selectedAddress"));
       setSelectedAddress(selectedAddress);
-    }    
+      // fetch latest minimum order amount from server when cart opens
+      FetchMinimumOrderAmount();
+    }
   }, [CartDrawerOpen]);
 
   const handleBrowseProducts = () => {
@@ -178,7 +180,7 @@ export default function AppCart({ CartDrawerOpen, setLoginDrawerOpen, handleAuth
   };
 
   //Load minimum order amount lists
-  const FetchMinimumOrderAmount = async () => {
+  async function FetchMinimumOrderAmount() {
     try {
       const list = await API_FetchMinimumOrderAmount();
       if (list.length !== 0) {
@@ -188,22 +190,24 @@ export default function AppCart({ CartDrawerOpen, setLoginDrawerOpen, handleAuth
       }
       else {
         setMinimumOrderAmountList([]);
-        setMinimumOrderAmount(ServerURL.MINIMUM_ORDER_AMOUNT);
-        setCashOnDeliveryLimit(ServerURL.CSAH_ON_DELIVERY_LIMIT);
+        // If API returns empty, fall back to 0 so it doesn't block checkout
+        setMinimumOrderAmount(0);
+        setCashOnDeliveryLimit(0);
       }
     } catch (error) {
       setMinimumOrderAmountList([]);
-      setMinimumOrderAmount(ServerURL.MINIMUM_ORDER_AMOUNT);
-      setCashOnDeliveryLimit(ServerURL.CSAH_ON_DELIVERY_LIMIT);
+      // On error, set to 0 so user isn't blocked by a stale default
+      setMinimumOrderAmount(0);
+      setCashOnDeliveryLimit(0);
       console.error('Error fetching amount lists:', error);
     }
-  };
+  }
 
   function cartTotalAmountCheck() {
     if (cartItems.length > 0) {
-      const totalPrice = cartItems.reduce((acc, item) => acc + item.totalPrice, 0);
-      return totalPrice;
+      return cartItems.reduce((acc, item) => acc + item.totalPrice, 0);
     }
+    return 0;
   }
 
   return (
@@ -340,8 +344,17 @@ export default function AppCart({ CartDrawerOpen, setLoginDrawerOpen, handleAuth
                   </FormGroup>
                 </Box>
               )}
-              {minAmountCheck &&(
-                <Box><Typography align='center' color='error'>Minimum on order above ₹300</Typography></Box>
+              {minAmountCheck && (
+                <Box>
+                  <Typography align='center' color='error'>
+                    {`Minimum order amount is ${MinimumOrderAmount.toLocaleString('en-IN', {
+                      style: 'currency',
+                      currency: ServerURL.CURRENCY,
+                      minimumFractionDigits: 0,
+                      maximumFractionDigits: 0,
+                    })}`}
+                  </Typography>
+                </Box>
               )}
               <Box display="flex" justifyContent="space-between" alignItems="center" mt={2}>
                 <Button
