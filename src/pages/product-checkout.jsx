@@ -189,19 +189,33 @@ export default function ProductCheckout() {
     const InsertSaleOrderSave = async(master) => {
         try {
             const response = await API_InsertSaleOrderSave(master);
-            if (response.length !== 0) {
+            console.log('InsertSaleOrderSave response:', response);
+
+            const success = (() => {
+                if (!response) return false;
+                if (Array.isArray(response)) return response.length > 0;
+                if (typeof response === 'object') return Object.keys(response).length > 0;
+                if (typeof response === 'string') return response.trim() !== '';
+                if (typeof response === 'number') return response !== 0;
+                if (typeof response === 'boolean') return response === true;
+                return false;
+            })();
+
+            if (success) {
                 setLoading(false);
                 localStorage.removeItem('cartItems');
                 setCartItems([]);
                 setInfoStatus('Your order has been placed');
                 setShowLoader(false);
                 handleAlertOpen(true);
+                return true;
             }
             else {
                 setLoading(false);
                 setInfoStatus('Your order has been rejected.');
                 setShowLoader(false);
                 handleAlertOpen(true);
+                return false;
             }
         } catch (error) {
             console.error("Error inserting order details:", error);
@@ -209,6 +223,7 @@ export default function ProductCheckout() {
             setInfoStatus('Your order has been rejected.');
             setShowLoader(false);
             handleAlertOpen(true);
+            return false;
         }
     };
 
@@ -280,14 +295,18 @@ export default function ProductCheckout() {
                 Remarks: "",                    
             },
         ];
-        await InsertSaleOrderSave(master);
+        console.log('Placing order. onlinePStatus:', onlinePStatus, 'onlinePaymentId:', onlinePaymentId);
+        console.log('Order master payload:', master);
+        const saved = await InsertSaleOrderSave(master);
+        console.log('Order save result:', saved);
+        return saved;
     };
 
     return (
         <>
             <CircularLoader showLoader={showLoader} />
             {OnlinePayment && (
-                <RazorpayPayment PlaceOrder={InsertSaleOrderSave} OnlinePayment={OnlinePayment} payableamount={(TotalPrice + DeliveryFee + HandlingCharge - ExtraDiscount)} usedwalledamount={walletAmount} Customer={selectedAddress}/>
+                <RazorpayPayment PlaceOrder={PlaceOrder} OnlinePayment={OnlinePayment} payableamount={(TotalPrice + DeliveryFee + HandlingCharge - ExtraDiscount)} usedwalledamount={walletAmount} Customer={selectedAddress}/>
             )}
             <AddressChangeModal UserId={UserId} setUserId={setUserId} ModalOpen={ModalOpen} handleChangeAddressClose={handleChangeAddressClose} handleAddressSelect={handleChangeAddress} />
             <Modal
