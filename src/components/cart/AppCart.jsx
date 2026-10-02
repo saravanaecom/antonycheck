@@ -140,7 +140,7 @@ export default function AppCart({ CartDrawerOpen, setLoginDrawerOpen, handleAuth
   };
 
   //Handle proceed
-  const handleProceedItems = () => {
+  const handleProceedItems = async () => {
     let userLogin = localStorage.getItem("userLogin");
     let userId = Number(atob(localStorage.getItem("userId")));
     setUserId(userId);
@@ -158,9 +158,10 @@ export default function AppCart({ CartDrawerOpen, setLoginDrawerOpen, handleAuth
       (selectedAddress.Address1 || selectedAddress.City || selectedAddress.Pincode)
     ) {
       const CartTotalAmount = cartTotalAmountCheck();
-      FetchMinimumOrderAmount();
+      setMinAmountCheck(false);
+      const latestMinimumOrderAmount = await FetchMinimumOrderAmount();
 
-      if (CartTotalAmount >= MinimumOrderAmount) {
+      if (CartTotalAmount >= latestMinimumOrderAmount) {
         if (useWallet === true) {
           handleAuthDrawerToggle(false);
           navigate(`/product-checkout?Wallet=${btoa(WalletAmount)}`);
@@ -183,23 +184,26 @@ export default function AppCart({ CartDrawerOpen, setLoginDrawerOpen, handleAuth
   async function FetchMinimumOrderAmount() {
     try {
       const list = await API_FetchMinimumOrderAmount();
-      if (list.length !== 0) {
+      if (list && list.length > 0) {
+        const nextMinimumOrderAmount = Number(list[0].MinOrderAmount || ServerURL.MINIMUM_ORDER_AMOUNT);
+        const nextCashOnDeliveryLimit = Number(list[0].CashOnDeliveryLimit || ServerURL.CSAH_ON_DELIVERY_LIMIT);
+
         setMinimumOrderAmountList(list);
-        setMinimumOrderAmount(list[0].MinOrderAmount);
-        setCashOnDeliveryLimit(list[0].CashOnDeliveryLimit);
+        setMinimumOrderAmount(nextMinimumOrderAmount);
+        setCashOnDeliveryLimit(nextCashOnDeliveryLimit);
+        return nextMinimumOrderAmount;
       }
-      else {
-        setMinimumOrderAmountList([]);
-        // If API returns empty, fall back to 0 so it doesn't block checkout
-        setMinimumOrderAmount(0);
-        setCashOnDeliveryLimit(0);
-      }
+
+      setMinimumOrderAmountList([]);
+      setMinimumOrderAmount(Number(ServerURL.MINIMUM_ORDER_AMOUNT));
+      setCashOnDeliveryLimit(Number(ServerURL.CSAH_ON_DELIVERY_LIMIT));
+      return Number(ServerURL.MINIMUM_ORDER_AMOUNT);
     } catch (error) {
       setMinimumOrderAmountList([]);
-      // On error, set to 0 so user isn't blocked by a stale default
-      setMinimumOrderAmount(0);
-      setCashOnDeliveryLimit(0);
+      setMinimumOrderAmount(Number(ServerURL.MINIMUM_ORDER_AMOUNT));
+      setCashOnDeliveryLimit(Number(ServerURL.CSAH_ON_DELIVERY_LIMIT));
       console.error('Error fetching amount lists:', error);
+      return Number(ServerURL.MINIMUM_ORDER_AMOUNT);
     }
   }
 
