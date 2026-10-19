@@ -437,7 +437,6 @@ export default function ProductCheckout() {
                             </Typography>
                             <RadioGroup value={PaymentType}>
                                 <FormControlLabel value="PayOnline" control={<Radio onChange={() => handlePaymentType('PayOnline')} size="small" />} label="Pay Online" />
-                                <FormControlLabel value="COD" control={<Radio onChange={() => handlePaymentType('COD')} size="small" />} label="Cash on Delivery (COD)" />
                             </RadioGroup>
 
                             <Box sx={{ mt: 2, float: 'left' }}>
